@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
-const Button = () => {
-    return (
-        <div>
-            <button type='button'>Calcular</button>
-        </div>
-    );
+const Button = (props) => {
+  return (
+    <div>
+      <button type={props.type}>{props.innerText}</button>
+    </div>
+  );
 };
 
 export default Button;

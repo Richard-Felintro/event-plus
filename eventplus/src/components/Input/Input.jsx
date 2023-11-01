@@ -1,11 +1,16 @@
-import React from 'react';
-
-const Input = () => {
-    return (
-        <div>
-            <input type="text" id='numero1' name='numero1' placeholder="Número"/>
-        </div>
-    );
+const Input = (props) => {
+  return (
+    <div>
+      <input
+        type={props.type}
+        id={props.id}
+        name={props.name}
+        placeholder={props.placeholder}
+        onChange={(props) => {props.fnAltera(props.target.value)}}
+      />
+      <span>{props.valor}</span>    
+    </div>
+  );
 };
 
 export default Input;
