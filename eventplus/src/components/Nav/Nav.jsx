@@ -5,22 +5,22 @@ import { Link } from 'react-router-dom'
 import logoMobile from '../../assets/images/logo-white.svg'
 import logoDesktop from '../../assets/images/logo-pink.svg'
 
-const Nav = () => {
+const Nav = ( {setExibeNavbar, exibeNavbar} ) => {
   return (
-    <nav className="navbar">
-      <span className="navbar__close">x</span>
+    <nav className={`navbar ${exibeNavbar ? "exibeNavbar" : ""}`}>
+      <span className="navbar__close" onClick={ () => { setExibeNavbar(false) }}>x</span>
       <Link to="/">
         <img 
-        className="eventlogo__logo-image" 
+        className="eventlogo eventlogo__logo-image" 
         src={window.innerWidth >= 992 ? logoDesktop : logoMobile} 
         alt="Event+ Logo" />
       </Link>
 
-      <div>
-        <Link to="/">Home</Link>
-        <Link to="/tipo-eventos">Tipos de Evento</Link>
-        <Link to="eventos">Eventos</Link>
-        <Link to="login">Login</Link>
+      <div className="navbar__items-box">
+        <Link className="navbar__item" to="/">Home</Link>
+        <Link className="navbar__item" to="/tipo-eventos">Tipos de Evento</Link>
+        <Link className="navbar__item" to="eventos">Eventos</Link>
+        <Link className="navbar__item" to="login">Login</Link>
       </div>
     </nav>
   );
