@@ -9,7 +9,7 @@ import "./Header.css";
 
 const Header = () => {
   const [exibeNavbar, setExibeNavbar] = useState(false);
-//   console.log(`Exibe a navbar? ${exibeNavbar}`);
+  //   console.log(`Exibe a navbar? ${exibeNavbar}`);
 
   return (
     <header className="headerpage">
@@ -23,14 +23,12 @@ const Header = () => {
               setExibeNavbar(true);
             }}
           />
+          <Nav setExibeNavbar={setExibeNavbar} exibeNavbar={exibeNavbar} />
+          <PerfilUsuario />
         </div>
-        <Nav setExibeNavbar={setExibeNavbar} exibeNavbar={exibeNavbar} />
-        <PerfilUsuario />
       </Container>
     </header>
   );
 };
-
-
 
 export default Header;

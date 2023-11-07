@@ -1,11 +1,12 @@
-import React from 'react';  
+import React from "react";
+import Title from "../../components/Title/Title";
 
 const EventosPage = () => {
-    return (
-        <div>
-            <h1>Eventos </h1>
-        </div>
-    );
+  return (
+    <div>
+      <Title titleText={"Eventos"} color={"black"} />
+    </div>
+  );
 };
 
 export default EventosPage;

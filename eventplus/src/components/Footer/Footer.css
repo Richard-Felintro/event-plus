@@ -5,8 +5,7 @@
     justify-content: center;
 }
 
-.footer-rights{
+.footerpage__rights{
     width: 100%;
     text-align: center;
-    font-family: 'Courier New', Courier, monospace;
 }

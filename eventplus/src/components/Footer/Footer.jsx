@@ -1,10 +1,10 @@
 import React from 'react';
 import './Footer.css'
 
-const Footer = () => {
+const Footer = ( { textRights = "Escola SENAI de Informática - 2023"}) => {
     return (
         <footer className='footerpage'>
-            <p className='footer-rights'>Todos os direitos reservados</p>
+            <p className='footerpage__rights'>{textRights}</p>
         </footer>
     );
 };
