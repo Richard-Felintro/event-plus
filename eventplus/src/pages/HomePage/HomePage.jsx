@@ -6,26 +6,22 @@ import VisionSection from "../../components/VisionSection/VisionSection";
 import ContactSection from "../../components/ContactSection/ContactSection";
 import NextEvent from "../../components/NextEvent/NextEvent";
 import Container from "../../components/Container/Container";
-import axios from "axios";
+import api from "../../Services/Service";
 
 const HomePage = () => {
-  // useEffect(() => {
-  //   // Chamar a API
-  //   async function getProximosEventos() {
-  //     try {
-  //       const promise = await axios.get(
-  //         "http://localhost:5000/api/Evento/ListarProximos"
-  //       );
-  //       console.log(promise.data)
-  //       setNextEvents(promise.data)
-  //     } catch (error) {}
-  //   }
-  //   getProximosEventos()
-
-  //   console.log("A home foi montada");
-  // }, []);
+  useEffect(() => {
+    async function getProximosEventos() {
+      try {
+        const promise = await api.get(
+          "http://localhost:5000/api/Evento/ListarProximos"
+        );
+        setNextEvents(promise.data);
+      } catch (error) {}
+    }
+    getProximosEventos();
+  }, []);
   // Mock API
-  const [nextEvents, setNextEvents] = useState();
+  const [nextEvents, setNextEvents] = useState([]);
 
   return (
     <div>
@@ -37,10 +33,10 @@ const HomePage = () => {
               {nextEvents.map((e) => {
                 return (
                   <NextEvent
-                    title={e.title}
-                    description={e.description}
-                    eventDate={e.date}
-                    idEvento={e.id}
+                    title={e.nomeEvento}
+                    description={e.descricao}
+                    eventDate={e.dataEvento}
+                    idEvento={e.idEvento}
                   />
                 );
               })}
