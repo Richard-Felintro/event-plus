@@ -13,7 +13,7 @@ const HomePage = () => {
     async function getProximosEventos() {
       try {
         const promise = await api.get(
-          "http://localhost:5000/api/Evento/ListarProximos"
+          "/Evento/ListarProximos"
         );
         setNextEvents(promise.data);
       } catch (error) {}
