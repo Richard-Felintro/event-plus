@@ -32,7 +32,7 @@
   margin-bottom: 30px;
 }
 
-.table-data__head-row:first-of-type {
+.table-data__head-row {
   border-bottom: 1px solid var(--color-white);
 }
 

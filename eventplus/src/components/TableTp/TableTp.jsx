@@ -4,8 +4,7 @@ import "./TableTp.css";
 import editPen from "../../assets/images/edit-pen.svg";
 import trashDelete from "../../assets/images/trash-delete.svg";
 
-const TableTp = ({ dados, fnUpdate, fnDelete }) => {
-  console.log(dados);
+const TableTp = ({ dados, fnUpdate = null, fnDelete = null}) => {
   return (
     <table className="table-data">
       <thead className="table-data__head">
@@ -21,32 +20,37 @@ const TableTp = ({ dados, fnUpdate, fnDelete }) => {
           </th>
         </tr>
       </thead>
-
       <tbody>
-        
-         {dados.map((t) => {
+        {/* Map dos dados */}
+        {/* Criar um map na variável dados e colocar a linha abaixo dentro do return do map */}
+        {dados.map((tipoEvento) => {
           return (
             <tr className="table-data__head-row">
               <td className="table-data__data table-data__data--big">
-                {t.titulo}
+                {tipoEvento.titulo}
               </td>
+
               <td className="table-data__data table-data__data--little">
                 <img
                   className="table-data__icon"
                   src={editPen}
+                  alt=""
                   onClick={() => {
-                    fnUpdate();
+                    fnUpdate(tipoEvento.idTipoEvento, tipoEvento.titulo);
                   }}
                 />
               </td>
+
               <td className="table-data__data table-data__data--little">
                 <img
                   className="table-data__icon"
                   src={trashDelete}
+                  alt=""
                   onClick={() => {
-                    fnDelete();
+                    fnDelete(tipoEvento.idTipoEvento);
                   }}
                 />
+                
               </td>
             </tr>
           );
