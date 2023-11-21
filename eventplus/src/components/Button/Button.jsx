@@ -1,9 +1,22 @@
 import React from "react";
 
-const Button = (props) => {
+const Button = ({
+  id,
+  name,
+  type,
+  additionalClass = "",
+  textButton,
+  manipulationFunction,
+}) => {
   return (
     <div>
-      <button type={props.type}>{props.innerText}</button>
+      <button 
+      id={id}
+      name={name}
+      type={type}
+      className={additionalClass}
+      onClick={manipulationFunction}
+      >{textButton}</button>
     </div>
   );
 };
