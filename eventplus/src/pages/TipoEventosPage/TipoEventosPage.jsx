@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { arrayToAlphabeticalOrder } from "../../Utils/arrayFunctions";
+
 import "./TipoEventosPage.css";
 import Title from "../../components/Title/Title";
 import MainContent from "../../components/MainContent/MainContent";
@@ -26,13 +28,7 @@ const TipoEventosPage = () => {
         setShowSpinner(true);
         try {
           const promise = await api.get("/TiposEvento");
-          setTipoEventos(
-            promise.data.sort((a, b) => {
-              if (a.titulo < b.titulo) {
-                return -1;
-              }
-            })
-          );
+          setTipoEventos(promise.data);
         } catch (error) {
           setNotifyUser({
             titleNote: "Aviso",

@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Title.css"
 
-const Title = ( {titleText, additionalClass = '', color = '', borderColor = ''} ) => {
+const Title = ( {titleText, additionalClass = '', color = 'black', borderColor = 'black'} ) => {
     return (
         <h1 className = {`title margem-acima ${additionalClass}`} style={{color : color}}>
             {titleText}
