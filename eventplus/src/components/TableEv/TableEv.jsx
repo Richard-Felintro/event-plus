@@ -31,20 +31,20 @@ const TableEv = ({ dados, fnUpdate = null, fnDelete = null}) => {
         </tr>
       </thead>
       <tbody>
-        {dados.map((evento) => {
+        {dados.map((e) => {
           return (
             <tr className="table-data__head-row">
               <td className="table-data__data table-data__data--little">
-                {evento.nomeEvento}
+                {e.nomeEvento}
               </td>
               <td className="table-data__data table-data__data--little">
-                {evento.descricao}
+                {e.descricao}
               </td>
               <td className="table-data__data table-data__data--little">
-                {evento.tiposEvento.titulo}
+                {e.tiposEvento.titulo}
               </td>
               <td className="table-data__data table-data__data--little">
-                {dateFormatDbToView(evento.dataEvento)}
+                {dateFormatDbToView(e.dataEvento)}
               </td>
 
               <td className="table-data__data table-data__data--little">
@@ -52,7 +52,7 @@ const TableEv = ({ dados, fnUpdate = null, fnDelete = null}) => {
                   className="table-data__icon"
                   src={editPen}
                   alt=""
-                  //* onClick={() => {}}
+                  onClick={() => {fnUpdate(e.idEvento,e.nomeEvento,e.descricao,e.dataEvento,e.idTipoEvento)}}
                 />
               </td>
 
@@ -61,7 +61,7 @@ const TableEv = ({ dados, fnUpdate = null, fnDelete = null}) => {
                   className="table-data__icon"
                   src={trashDelete}
                   alt=""
-                  onClick={() => {fnDelete(evento.idEvento)}}
+                  onClick={() => {fnDelete(e.idEvento)}}
                 />
               </td>
             </tr>

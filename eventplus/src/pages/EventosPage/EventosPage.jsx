@@ -1,15 +1,15 @@
 import "./EventosPage.css";
 import React, { useEffect, useState } from "react";
 import {
-  arrayToDateOrder,
-  arrayToAlphabeticalOrder,
-} from "../../Utils/arrayFunctions";
+  Input,
+  Button,
+  Select,
+} from "../../components/FormComponents/FormComponents";
 
 import Title from "../../components/Title/Title";
 import MainContent from "../../components/MainContent/MainContent";
 import ImageIllustrator from "../../components/ImageIllustrator/ImageIllustrator";
 import Container from "../../components/Container/Container";
-import { Input, Button } from "../../components/FormComponents/FormComponents";
 import api from "../../Services/Service";
 import Notification from "../../components/Notification/Notification";
 import Spinner from "../../components/Spinner/Spinner";
@@ -19,33 +19,162 @@ import TableEv from "../../components/TableEv/TableEv";
 
 const EventosPage = () => {
   const [eventos, setEventos] = useState([]);
+  const [tipoEvento, setTipoEvento] = useState([]);
+
+  const [idEvento, setIdEvento] = useState("");
+  const [nome, setNome] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [data, setData] = useState("");
+  const [idTipoEvento, setIdTipoEvento] = useState("");
+
+  const [frmEdit, setFrmEdit] = useState(false);
+  const [showSpinner, setShowSpinner] = useState(false);
+  const [notifyUser, setNotifyUser] = useState({});
 
   // Puxa os dados dos eventos na api com um Get sempre que o programa é aberto
   useEffect(() => {
-    async function getEventos() {
+    async function getDados() {
+      setShowSpinner(true);
       try {
-        const promise = await api.get("/Evento");
-        setEventos(promise.data);
+        const promiseEv = await api.get("/Evento/ListarProximos");
+        setEventos(promiseEv.data);
+        console.log(promiseEv.data);
+        const promiseTp = await api.get("/TiposEvento");
+        setTipoEvento(promiseTp.data);
       } catch (error) {
         console.log(error);
+        setNotifyUser({
+          titleNote: "Erro",
+          textNote: `Renderização falha.`,
+          imgIcon: "error",
+          showMessage: true,
+        });
       }
+      getDados();
+      setShowSpinner(false);
     }
-    getEventos();
-    console.log(eventos);
   }, []);
 
-  async function handleDelete(id) {
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setShowSpinner(true);
     try {
-      const retorno = await api.delete(`/Evento/${id}`);
+      if (nome.trim().length < 3 || descricao.trim().length < 3) {
+        return alert(":3");
+      }
+      const retorno = await api.post("/Evento", {
+        nomeEvento: nome,
+        descricao: descricao,
+        dataEvento: `${data}T00:00:00.000Z`,
+        idTipoEvento: idTipoEvento,
+        idInstituicao: "662a7d1c-f8e9-4ce2-96c5-ea18447a4e7b",
+      });
+      console.log(retorno);
+      setNome("");
+      setDescricao("");
+      setData("");
+      setIdTipoEvento("");
+      setNotifyUser({
+        titleNote: "Sucesso",
+        textNote: `Cadastrado com sucesso!`,
+        imgIcon: "success",
+        showMessage: true,
+      });
     } catch (error) {
       console.log(error);
+      setNotifyUser({
+        titleNote: "Erro",
+        textNote: `Cadastro falho.`,
+        imgIcon: "error",
+        imgAlt: "",
+        showMessage: true,
+      });
     }
+    setShowSpinner(false);
+  }
+
+  async function handleDelete(id) {
+    setShowSpinner(true);
+    try {
+      await api.delete(`/Evento/${id}`);
+      setNotifyUser({
+        titleNote: "Sucesso",
+        textNote: `Deletado com sucesso!`,
+        imgIcon: "success",
+        imgAlt: "",
+        showMessage: true,
+      });
+    } catch (error) {
+      console.log(error);
+      setNotifyUser({
+        titleNote: "Erro",
+        textNote: `Deletação não sucedida`,
+        imgIcon: "error",
+        imgAlt: "",
+        showMessage: true,
+      });
+    }
+    setShowSpinner(false);
+  }
+
+  function showUpdateForm(id, nome, desc, data, idTipoEvento) {
+    setShowSpinner(true);
+    setFrmEdit(true);
+    setIdEvento(id);
+    setNome(nome);
+    setDescricao(desc);
+    setIdTipoEvento(idTipoEvento);
+    setShowSpinner(false);
+  }
+
+  async function handleUpdate() {
+    setShowSpinner(true);
+    try {
+      const retorno = await api.put(`/Evento/${idEvento}`, {
+        nomeEvento: nome,
+        descricao: descricao,
+        dataEvento: `${data}T00:00:00.000Z`,
+        idTipoEvento: idTipoEvento,
+        idInstituicao: "662a7d1c-f8e9-4ce2-96c5-ea18447a4e7b",
+      });
+      setNome("");
+      setDescricao("");
+      setData("");
+      setIdTipoEvento("");
+      setNotifyUser({
+        titleNote: "Sucesso",
+        textNote: `Atualizado com sucesso!`,
+        imgIcon: "success",
+        imgAlt: "",
+        showMessage: true,
+      });
+    } catch (error) {
+      console.log(error);
+      setNotifyUser({
+        titleNote: "Erro",
+        textNote: `Atualização falha.`,
+        imgIcon: "error",
+        imgAlt: "",
+        showMessage: true,
+      });
+    }
+    setShowSpinner(false);
+  }
+
+  function editActionAbort() {
+    setShowSpinner(true);
+    setFrmEdit(false);
+    setNome("");
+    setDescricao("");
+    setData("");
+    setIdTipoEvento("");
+    setShowSpinner(false);
   }
 
   return (
     <MainContent>
-      {/* <Notification />
-      <Spinner /> */}
+      <Notification />
+      {showSpinner ? <Spinner /> : null}
       <section className="cadastro-evento-section">
         <Container>
           <div className="cadastro-evento__box">
@@ -54,54 +183,140 @@ const EventosPage = () => {
               imageRender={eventoImage}
               alterText={"Homem interagindo com pop-ups em uma tela projetada."}
             />
-            <form className="f-evento">
-              <Input
-                type={"text"}
-                id={"nome"}
-                name={"nome"}
-                //* value={value}
-                required={"required"}
-                placeholder={"Nome"}
-                //* onChange={manipulationFunction}
-                autoComplete="off"
-              />
-              <Input
-                type={"text"}
-                id={"descricao"}
-                name={"descricao"}
-                //* value={value}
-                required={"required"}
-                placeholder={"Descrição"}
-                //* onChange={manipulationFunction}
-                autoComplete="off"
-              />
-              <Input
-                type={"text"}
-                id={"tipoEvento"}
-                name={"tipoEvento"}
-                //* value={value}
-                required={"required"}
-                placeholder={"TIPO EVENTO PLACEHOLDER"}
-                //* onChange={manipulationFunction}
-                autoComplete="off"
-              />
-              <Input
-                type={"date"}
-                id={"data"}
-                name={"data"}
-                //* value={value}
-                required={"required"}
-                placeholder={"DD/MM/YYYY"}
-                //* onChange={manipulationFunction}
-                autoComplete="off"
-              />
-              <Button
-                type={"submit"}
-                name={"cadastrar"}
-                id={"cadastrar"}
-                manipulationFunction={""}
-              />
-            </form>
+            {!frmEdit ? (
+              <form
+                className="f-evento"
+                onSubmit={!frmEdit ? handleSubmit : handleUpdate}
+              >
+                <Input
+                  type={"text"}
+                  id={"nome"}
+                  name={"nome"}
+                  value={nome}
+                  required={"required"}
+                  placeholder={"Nome"}
+                  manipulationFunction={(e) => {
+                    setNome(e.target.value);
+                  }}
+                  autoComplete="off"
+                />
+                <Input
+                  type={"text"}
+                  id={"descricao"}
+                  name={"descricao"}
+                  value={descricao}
+                  required={"required"}
+                  placeholder={"Descrição"}
+                  manipulationFunction={(e) => {
+                    setDescricao(e.target.value);
+                  }}
+                  autoComplete="off"
+                />
+                <Select
+                  id={"tipoEvento"}
+                  name={"tipoEvento"}
+                  value={idTipoEvento}
+                  required={"required"}
+                  placeholder={"Tipo do Evento"}
+                  dataSource={tipoEvento}
+                  manipulationFunction={(e) => {
+                    setIdTipoEvento(e.target.value);
+                  }}
+                />
+                <Input
+                  type={"date"}
+                  id={"data"}
+                  name={"data"}
+                  value={data}
+                  required={"required"}
+                  placeholder={"DD/MM/YYYY"}
+                  manipulationFunction={(e) => {
+                    setData(e.target.value);
+                  }}
+                  autoComplete="off"
+                />
+
+                <Button
+                  textButton={"Cadastrar"}
+                  type={"submit"}
+                  name={"cadastrar"}
+                  id={"cadastrar"}
+                />
+              </form>
+            ) : (
+              <form
+                className="f-evento"
+                onSubmit={!frmEdit ? handleSubmit : handleUpdate}
+              >
+                <div>
+                  {" "}
+                  <Input
+                    type={"text"}
+                    id={"nome"}
+                    name={"nome"}
+                    value={nome}
+                    required={"required"}
+                    placeholder={"Nome"}
+                    manipulationFunction={(e) => {
+                      setNome(e.target.value);
+                    }}
+                    autoComplete="off"
+                  />
+                  <Input
+                    type={"text"}
+                    id={"descricao"}
+                    name={"descricao"}
+                    value={descricao}
+                    required={"required"}
+                    placeholder={"Descrição"}
+                    manipulationFunction={(e) => {
+                      setDescricao(e.target.value);
+                    }}
+                    autoComplete="off"
+                  />
+                  <Select
+                    id={"tipoEvento"}
+                    name={"tipoEvento"}
+                    value={idTipoEvento}
+                    required={"required"}
+                    placeholder={"Tipo do Evento"}
+                    dataSource={tipoEvento}
+                    manipulationFunction={(e) => {
+                      setIdTipoEvento(e.target.value);
+                    }}
+                  />
+                  <Input
+                    type={"date"}
+                    id={"data"}
+                    name={"data"}
+                    value={data}
+                    required={"required"}
+                    placeholder={"DD/MM/YYYY"}
+                    manipulationFunction={(e) => {
+                      setData(e.target.value);
+                    }}
+                    autoComplete="off"
+                  />
+                </div>
+                <div className="buttons-editbox">
+                  <Button
+                    textButton={"Atualizar"}
+                    type={"submit"}
+                    name={"atualizar"}
+                    id={"atualizar"}
+                  />
+                  <Button
+                    textButton={"Cancelar"}
+                    type={"button"}
+                    name={"cancelar"}
+                    id={"cancelar"}
+                    manipulationFunction={() => {
+                      editActionAbort();
+                    }}
+                  />
+                </div>
+              </form>
+            )}
           </div>
         </Container>
       </section>
@@ -116,7 +331,7 @@ const EventosPage = () => {
           <TableEv
             dados={eventos}
             fnDelete={handleDelete}
-            fnUpdate={"showUpdateForm"}
+            fnUpdate={showUpdateForm}
           />
         </Container>
       </section>
