@@ -52,7 +52,7 @@ const TableEv = ({ dados, fnUpdate = null, fnDelete = null}) => {
                   className="table-data__icon"
                   src={editPen}
                   alt=""
-                  onClick={() => {fnUpdate(e.idEvento,e.nomeEvento,e.descricao,e.dataEvento,e.idTipoEvento)}}
+                  onClick={() => {fnUpdate(e.idEvento,e.nomeEvento,e.descricao,e.dataEvento,e.tiposEvento.idTipoEvento)}}
                 />
               </td>
 

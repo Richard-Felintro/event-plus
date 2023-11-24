@@ -33,35 +33,44 @@ const EventosPage = () => {
 
   // Puxa os dados dos eventos na api com um Get sempre que o programa é aberto
   useEffect(() => {
-    async function getDados() {
-      setShowSpinner(true);
-      try {
-        const promiseEv = await api.get("/Evento/ListarProximos");
-        setEventos(promiseEv.data);
-        console.log(promiseEv.data);
-        const promiseTp = await api.get("/TiposEvento");
-        setTipoEvento(promiseTp.data);
-      } catch (error) {
-        console.log(error);
-        setNotifyUser({
-          titleNote: "Erro",
-          textNote: `Renderização falha.`,
-          imgIcon: "error",
-          showMessage: true,
-        });
-      }
-      getDados();
-      setShowSpinner(false);
-    }
+    getDados();
   }, []);
+
+  async function getDados() {
+    setShowSpinner(true);
+    try {
+      const promiseEv = await api.get("/Evento/ListarProximos");
+      setEventos(promiseEv.data);
+      console.log(promiseEv.data);
+      const promiseTp = await api.get("/TiposEvento");
+      setTipoEvento(promiseTp.data);
+    } catch (error) {
+      console.log(error);
+      setNotifyUser({
+        titleNote: "Erro",
+        textNote: `Renderização falha.`,
+        imgIcon: "error",
+        showMessage: true,
+      });
+    }
+    setShowSpinner(false);
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setShowSpinner(true);
     try {
       if (nome.trim().length < 3 || descricao.trim().length < 3) {
-        return alert(":3");
+        setNotifyUser({
+          titleNote: "Erro",
+          textNote: `Campos de texto devem conter mais que 3 caracteres!`,
+          imgIcon: "error",
+          imgAlt: "",
+          showMessage: true,
+        });
+        return;
       }
+      console.log(nome, descricao, data, idTipoEvento);
       const retorno = await api.post("/Evento", {
         nomeEvento: nome,
         descricao: descricao,
@@ -80,6 +89,7 @@ const EventosPage = () => {
         imgIcon: "success",
         showMessage: true,
       });
+      getDados();
     } catch (error) {
       console.log(error);
       setNotifyUser({
@@ -104,6 +114,7 @@ const EventosPage = () => {
         imgAlt: "",
         showMessage: true,
       });
+      getDados();
     } catch (error) {
       console.log(error);
       setNotifyUser({
@@ -123,6 +134,7 @@ const EventosPage = () => {
     setIdEvento(id);
     setNome(nome);
     setDescricao(desc);
+    setData(data.substr(0, 10));
     setIdTipoEvento(idTipoEvento);
     setShowSpinner(false);
   }
@@ -130,7 +142,7 @@ const EventosPage = () => {
   async function handleUpdate() {
     setShowSpinner(true);
     try {
-      const retorno = await api.put(`/Evento/${idEvento}`, {
+      await api.put(`/Evento/${idEvento}`, {
         nomeEvento: nome,
         descricao: descricao,
         dataEvento: `${data}T00:00:00.000Z`,
@@ -148,6 +160,7 @@ const EventosPage = () => {
         imgAlt: "",
         showMessage: true,
       });
+      getDados();
     } catch (error) {
       console.log(error);
       setNotifyUser({
@@ -173,7 +186,7 @@ const EventosPage = () => {
 
   return (
     <MainContent>
-      <Notification />
+      <Notification {...notifyUser} setNotifyUser={setNotifyUser} />
       {showSpinner ? <Spinner /> : null}
       <section className="cadastro-evento-section">
         <Container>
@@ -219,6 +232,8 @@ const EventosPage = () => {
                   required={"required"}
                   placeholder={"Tipo do Evento"}
                   dataSource={tipoEvento}
+                  idItem={"idTipoEvento"}
+                  itemName={"titulo"}
                   manipulationFunction={(e) => {
                     setIdTipoEvento(e.target.value);
                   }}
@@ -281,6 +296,8 @@ const EventosPage = () => {
                     required={"required"}
                     placeholder={"Tipo do Evento"}
                     dataSource={tipoEvento}
+                    idItem={"idTipoEvento"}
+                    itemName={"titulo"}
                     manipulationFunction={(e) => {
                       setIdTipoEvento(e.target.value);
                     }}
