@@ -49,7 +49,7 @@ const EventosPage = () => {
       setNotifyUser({
         titleNote: "Erro",
         textNote: `Renderização falha.`,
-        imgIcon: "error",
+        imgIcon: "danger",
         showMessage: true,
       });
     }
@@ -64,7 +64,7 @@ const EventosPage = () => {
         setNotifyUser({
           titleNote: "Erro",
           textNote: `Campos de texto devem conter mais que 3 caracteres!`,
-          imgIcon: "error",
+          imgIcon: "danger",
           imgAlt: "",
           showMessage: true,
         });
@@ -120,7 +120,7 @@ const EventosPage = () => {
       setNotifyUser({
         titleNote: "Erro",
         textNote: `Deletação não sucedida`,
-        imgIcon: "error",
+        imgIcon: "danger",
         imgAlt: "",
         showMessage: true,
       });
@@ -166,7 +166,7 @@ const EventosPage = () => {
       setNotifyUser({
         titleNote: "Erro",
         textNote: `Atualização falha.`,
-        imgIcon: "error",
+        imgIcon: "danger",
         imgAlt: "",
         showMessage: true,
       });
@@ -232,8 +232,7 @@ const EventosPage = () => {
                   required={"required"}
                   placeholder={"Tipo do Evento"}
                   dataSource={tipoEvento}
-                  idItem={"idTipoEvento"}
-                  itemName={"titulo"}
+                  text={"titulo"}
                   manipulationFunction={(e) => {
                     setIdTipoEvento(e.target.value);
                   }}
@@ -296,8 +295,7 @@ const EventosPage = () => {
                     required={"required"}
                     placeholder={"Tipo do Evento"}
                     dataSource={tipoEvento}
-                    idItem={"idTipoEvento"}
-                    itemName={"titulo"}
+                    text={"titulo"}
                     manipulationFunction={(e) => {
                       setIdTipoEvento(e.target.value);
                     }}

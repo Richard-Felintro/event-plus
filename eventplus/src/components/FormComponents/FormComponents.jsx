@@ -56,11 +56,7 @@ export const Select = ({
   dataSource = [],
   additionalClass,
   manipulationFunction,
-  itemId,
-  itemName
 }) => {
-  var objId = itemId
-  var objName = itemName
   return (
     <select
       className={`input-component ${additionalClass}`}
@@ -72,8 +68,8 @@ export const Select = ({
       onChange={manipulationFunction}
     >
       <option value="">{placeholder}</option>
-      {dataSource.map((obj) => {
-        return <option key={obj[objId]} value={obj[objId]}>{obj[objName]}</option>;
+      {dataSource.map((e) => {
+        return <option key={e.idTipoEvento} value={e.idTipoEvento}>{e.titulo}</option>;
       })}
     </select>
   );
