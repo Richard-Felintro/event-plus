@@ -10,7 +10,7 @@ export const Input = ({
   name,
   placeholder,
   manipulationFunction,
-}) => {
+}) => { //teste
   return (
     <input
       type={type}
