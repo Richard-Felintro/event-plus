@@ -228,16 +228,12 @@ const EventosPage = () => {
                 <Select
                   id={"tipoEvento"}
                   name={"tipoEvento"}
-                  value={idTipoEvento}
                   required={"required"}
-                  placeholder={"Tipo do Evento"}
-                  dataSource={tipoEvento}
-                  idItem={"idTipoEvento"}
-                  itemName={"titulo"}
-                  manipulationFunction={(e) => {
-                    setIdTipoEvento(e.target.value);
-                  }}
+                  dados={tipoEvento}
+                  value={idTipoEvento}
+                  manipulationFunction={(e) => setIdTipoEvento(e.target.value)}
                 />
+                <label>{idTipoEvento.value}</label>
                 <Input
                   type={"date"}
                   id={"data"}
@@ -292,15 +288,10 @@ const EventosPage = () => {
                   <Select
                     id={"tipoEvento"}
                     name={"tipoEvento"}
-                    value={idTipoEvento}
                     required={"required"}
-                    placeholder={"Tipo do Evento"}
-                    dataSource={tipoEvento}
-                    idItem={"idTipoEvento"}
-                    itemName={"titulo"}
-                    manipulationFunction={(e) => {
-                      setIdTipoEvento(e.target.value);
-                    }}
+                    dados={tipoEvento}
+                    value={idTipoEvento}
+                    manipulationFunction={(e) => setIdTipoEvento(e.target.value)}
                   />
                   <Input
                     type={"date"}

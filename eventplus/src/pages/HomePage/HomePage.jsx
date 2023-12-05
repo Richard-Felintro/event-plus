@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 import "./HomePage.css";
 import MainContent from "../../components/MainContent/MainContent";
 import Banner from "../../components/Banner/Banner";
@@ -12,9 +14,7 @@ const HomePage = () => {
   useEffect(() => {
     async function getProximosEventos() {
       try {
-        const promise = await api.get(
-          "/Evento/ListarProximos"
-        );
+        const promise = await api.get("/Evento/ListarProximos");
         setNextEvents(promise.data);
       } catch (error) {}
     }
@@ -30,16 +30,26 @@ const HomePage = () => {
         <section className="proximos-eventos">
           <Container>
             <div className="events-box">
-              {nextEvents.map((e) => {
-                return (
-                  <NextEvent
-                    title={e.nomeEvento}
-                    description={e.descricao}
-                    eventDate={e.dataEvento}
-                    idEvento={e.idEvento}
-                  />
-                );
-              })}
+              <Swiper
+                spaceBetween={50}
+                slidesPerView={4}
+                navigation
+                pagination={{ clickable: true }}
+                scrollbar={{ draggable: true }}
+              >
+                {nextEvents.map((e) => {
+                  return (
+                    <SwiperSlide>
+                      <NextEvent
+                        title={e.nomeEvento}
+                        description={e.descricao}
+                        eventDate={e.dataEvento}
+                        idEvento={e.idEvento}
+                      />
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
             </div>
           </Container>
         </section>

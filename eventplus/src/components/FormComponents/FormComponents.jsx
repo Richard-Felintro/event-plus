@@ -10,7 +10,8 @@ export const Input = ({
   name,
   placeholder,
   manipulationFunction,
-}) => { //teste
+}) => {
+  //teste
   return (
     <input
       type={type}
@@ -48,32 +49,33 @@ export const Button = ({
 };
 
 export const Select = ({
+  dados = [],
   id,
   name,
-  value,
   required,
-  placeholder,
-  dataSource = [],
-  additionalClass,
+  additionalClass = "",
   manipulationFunction,
-  itemId,
-  itemName
+  value,
+  key,
 }) => {
-  var objId = itemId
-  var objName = itemName
+  console.log(dados[key]);
+  console.log(dados[value]);
+
   return (
     <select
-      className={`input-component ${additionalClass}`}
-      name={name}
       id={id}
-      value={value}
+      name={name}
       required={required}
-      placeholder={placeholder}
+      className={`input-component ${additionalClass}`}
       onChange={manipulationFunction}
     >
-      <option value="">{placeholder}</option>
-      {dataSource.map((obj) => {
-        return <option key={obj[objId]} value={obj[objId]}>{obj[objName]}</option>;
+      <option value="">Selecione</option>
+      {dados.map((dado) => {
+        return (
+          <option key={dado[key]} value={dado[key]}>
+            {dado[value]}
+          </option>
+        );
       })}
     </select>
   );

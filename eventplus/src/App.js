@@ -1,10 +1,20 @@
 import "./App.css";
-import Rotas from "./routes";
+import Rotas from "./routes/routes";
+import { UserContext } from './context/AuthContext';
+import { useEffect, useState } from "react";
+import logo from './logo.svg';
 
 function App() {
-  return(
-    <Rotas/>
-  )
+  const [userData, setUserData] = useState({})
+
+  useEffect(() => {
+    
+  },[])
+  return (
+    <UserContext.Provider value={{ userData, setUserData }}>
+      <Rotas />
+    </UserContext.Provider>
+  );
 }
 
 export default App;
