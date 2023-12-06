@@ -6,11 +6,12 @@ import "./Modal.css";
 
 const Modal = ({
   modalTitle = "Feedback",
-  comentaryText = "Não informado. Não informado. Não informado.",
+  commentText = "Não informado. Não informado. Não informado.",
   userId = null,
   showHideModal = false,
+  fnGet = null,
+  fnPost = null,
   fnDelete = null,
-  fnNewCommentary = null,
 }) => {
   return (
     <div className="modal">
@@ -31,7 +32,7 @@ const Modal = ({
             onClick={fnDelete}
           />
 
-          <p className="comentary__text">{comentaryText}</p>
+          <p className="comentary__text">{commentText}</p>
 
           <hr className="comentary__separator" />
         </div>
@@ -44,7 +45,7 @@ const Modal = ({
         <Button
           textButton="Comentar"
           additionalClass="comentary__button"
-          manipulationFunction={fnNewCommentary}
+          manipulationFunction={fnPost}
         />
       </article>
     </div>
