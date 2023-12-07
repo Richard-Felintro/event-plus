@@ -38,6 +38,7 @@ const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
                 {/* {e.dataEvento} */}
                 {dateFormatDbToView(e.dataEvento)}
               </td>
+              <label htmlFor="">{e.idEvento}</label>
 
               <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
                 <img
@@ -45,9 +46,9 @@ const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
                   idevento={e.idEvento}
                   src={comentaryIcon}
                   alt=""
-                  onClick={fnShowModal}
+                  onClick={() => {fnShowModal(e.idEvento)}}
                 />
-
+  
                 <ToggleSwitch 
                 toggleActive={e.situacao}
                 manipulationFunction={() => {

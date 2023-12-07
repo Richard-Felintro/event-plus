@@ -18,11 +18,13 @@ const EventosAlunoPage = () => {
   const [eventos, setEventos] = useState([]);
   // select mocado
   const [quaisEventos, setQuaisEventos] = useState([
-    { value: "1", text: "Todos os eventos" },
-    { value: "2", text: "Meus eventos" },
+    { number: "1", text: "Todos os eventos" },
+    { number: "2", text: "Meus eventos" },
   ]);
 
-  const [tipoEvento, setTipoEvento] = useState("1"); //código do tipo do Evento escolhido
+  const [tipoEvento, setTipoEvento] = useState([]); //código do tipo do Evento escolhido
+  const [idEvento, setIdEvento] = useState("");
+
   const [showSpinner, setShowSpinner] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -30,42 +32,51 @@ const EventosAlunoPage = () => {
   const { userData, setUserData } = useContext(UserContext);
 
   useEffect(() => {
-    loadEventsType();
-  }, [tipoEvento, userData.userId]);
-  async function loadEventsType() {
-    // Trazer todos os eventos
-    // Ou trazer somente os meus eventos
-
-    try {
-      if (quaisEventos === "1") {
-        const promise = await api.get("/Evento/ListarProximos");
-        const promiseEventos = await api.get(
-          `/Presenca/`
-        );
-        const dadosMarcados = verificaPresenca(
-          promise.data,
-          promiseEventos.data
-        );
-        setEventos(promise.data);
-      } else {
-        let arrEventos = [];
-        const promiseEventos = await api.get(
-          `/Presenca/`,userData.userId
-        );
-        promiseEventos.data.forEach((element) => {
-          arrEventos.push({
-            ...element.evento,
-            situacao: element.situacao,
-            idPresencaEvento: element.idPresencaEvento,
-          });
-        });
-        setEventos(promiseEventos.data);
-        console.log(promiseEventos.data);
+    async function loadEventsType() {
+      // Trazer todos os eventos
+      // Ou trazer somente os meus eventos
+      try {
+        const promiseTipo = await api.get("/TiposEvento");
+        setTipoEvento(promiseTipo.data);
+        if (quaisEventos === "1") {
+          const promise = await api.get("/Evento/ListarProximos");
+          const promiseEventos = await api.get(`/Presenca/`);
+          const dadosMarcados = verificaPresenca(
+            promise.data,
+            promiseEventos.data
+          );
+          console.log("1");
+          setEventos(promise.data);
+        } else {
+          const promise = await api.get("/Evento/ListarProximos");
+          const promiseEventos = await api.get(`/Presenca/`);
+          const dadosMarcados = verificaPresenca(
+            promise.data,
+            promiseEventos.data
+          );
+          console.log("1");
+          setEventos(promise.data);
+          // let arrEventos = [];
+          // const promiseEventos = await api.get(
+          //   `/Presenca/`,userData.userId
+          // );
+          // promiseEventos.data.forEach((element) => {
+          //   arrEventos.push({
+          //     ...element.evento,
+          //     situacao: element.situacao,
+          //     idPresencaEvento: element.idPresencaEvento,
+          //   });
+          // });
+          // setEventos(arrEventos);
+          // console.log(arrEventos);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
-  }
+    loadEventsType();
+  }, []);
+  // }, [tipoEvento, userData.userId]);
 
   const verificaPresenca = (arrAllEvents, eventsUser) => {
     for (let x = 0; x < arrAllEvents.length; x++) {
@@ -84,20 +95,29 @@ const EventosAlunoPage = () => {
     setTipoEvento(tpEvent);
   }
 
-  async function loadMyComment(idComentary) {
-    return "????";
+  async function getComment() {
+    try {
+      const promise = await api.get(
+        `ComentariosEvento/BuscarPorIdUsuario?IdUsuario=${userData.nome}&IdEvento=${idEvento}`
+      );
+      return promise;
+    } catch (error) {
+
+    }
   }
 
   async function postMyComment(idComentary) {
     return "????";
   }
 
-  const showHideModal = async () => {
-    setShowModal(showModal ? false : true);
+  const showHideModal = async (id) => {
+    showModal ? setShowModal(false) : setShowModal(true);
+    console.log(id);
+    setIdEvento(id);
+    console.log(idEvento);
   };
 
   const commentRemove = async () => {
-
     alert("Remover o comentário");
   };
 
@@ -110,7 +130,6 @@ const EventosAlunoPage = () => {
           IdEvento: idEvent,
         });
         if (promise.status === 201) {
-          loadEventsType();
         }
       } catch (error) {
         console.log(error);
@@ -128,21 +147,19 @@ const EventosAlunoPage = () => {
           <Title titleText={"Eventos"} additionalClass="custom-title" />
 
           <Select
-            id="id-tipo-evento"
-            name="tipo-evento"
-            required={true}
-            dados={quaisEventos} // aqui o array dos tipos
-            mudaOpcao={(e) => myEvents(e.target.value)} // aqui só a variável state
-            selectValue={tipoEvento}
-            additionalClass="select-tp-evento"
+            id={"tipoEvento"}
+            name={"tipoEvento"}
+            required={"required"}
+            dados={quaisEventos}
+            valor={"text"}
+            chave={"number"}
+            manipulationFunction={(e) => setQuaisEventos(e.target.value)}
           />
           <Table
             tableType={tipoEvento}
             dados={eventos}
             fnConnect={handleConnect}
-            fnShowModal={() => {
-              showHideModal();
-            }}
+            fnShowModal={showHideModal}
           />
         </Container>
       </MainContent>
@@ -153,8 +170,9 @@ const EventosAlunoPage = () => {
       {showModal ? (
         <Modal
           userId={userData.userId}
+          idEvento={idEvento}
           showHideModal={showHideModal}
-          fnGet={loadMyComment}
+          fnGet={getComment}
           fnPost={postMyComment}
           fnDelete={commentRemove}
         />

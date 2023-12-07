@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import trashDelete from "../../assets/images/trash-delete-red.png";
 
 import { Button, Input } from "../FormComponents/FormComponents";
@@ -6,7 +6,7 @@ import "./Modal.css";
 
 const Modal = ({
   modalTitle = "Feedback",
-  commentText = "Não informado. Não informado. Não informado.",
+  commentText = ":3",
   userId = null,
   showHideModal = false,
   fnGet = null,
@@ -32,7 +32,7 @@ const Modal = ({
             onClick={fnDelete}
           />
 
-          <p className="comentary__text">{commentText}</p>
+          <p className="comentary__text">{fnGet.descricao}</p>
 
           <hr className="comentary__separator" />
         </div>

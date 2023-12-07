@@ -230,7 +230,8 @@ const EventosPage = () => {
                   name={"tipoEvento"}
                   required={"required"}
                   dados={tipoEvento}
-                  value={idTipoEvento}
+                  valor={"titulo"}
+                  chave={"idTipoEvento"}
                   manipulationFunction={(e) => setIdTipoEvento(e.target.value)}
                 />
                 <label>{idTipoEvento.value}</label>
