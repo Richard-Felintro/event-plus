@@ -26,9 +26,11 @@ namespace webapi.event_.Repositories
                         Nome = u.Nome,
                         Email = u.Email,
                         Senha = u.Senha,
+                        IdTipoUsuario = u.IdTipoUsuario,
 
                         TipoUsuario = new TiposUsuario
                         {
+                            IdTipoUsuario = u.IdTipoUsuario,
                             Titulo = u.TipoUsuario!.Titulo
                         }
 

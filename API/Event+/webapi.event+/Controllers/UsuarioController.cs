@@ -33,5 +33,20 @@ namespace webapi.event_.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public IActionResult Get(Guid id)
+        {
+            try
+            {
+                Usuario user = _usuarioRepository.BuscarPorId(id);
+
+                return StatusCode(201, user);
+            }
+            catch (Exception error)
+            {
+                return BadRequest(error.Message);
+            }
+        }
+
     }
 }          

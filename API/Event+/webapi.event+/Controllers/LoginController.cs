@@ -15,7 +15,7 @@ namespace webapi.event_.Controllers
     [Produces("application/json")]
     public class LoginController : ControllerBase
     {
-        private readonly IUsuarioRepository _usuarioRepository;
+        private IUsuarioRepository _usuarioRepository;
 
         public LoginController()
         {
