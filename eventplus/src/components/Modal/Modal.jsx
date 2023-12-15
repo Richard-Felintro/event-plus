@@ -8,11 +8,20 @@ const Modal = ({
   modalTitle = "Feedback",
   commentText = ":3",
   userId = null,
+  idEvento = null,
   showHideModal = false,
   fnGet = null,
   fnPost = null,
   fnDelete = null,
+  previousComment = null,
 }) => {
+  useEffect(() => {
+    async function getPreviousComment() {
+      previousComment = await fnGet();
+      console.log(previousComment.descricao);
+    }
+    getPreviousComment()
+  });
   return (
     <div className="modal">
       <article className="modal__box">
@@ -32,7 +41,7 @@ const Modal = ({
             onClick={fnDelete}
           />
 
-          <p className="comentary__text">{fnGet.descricao}</p>
+          <p className="comentary__text">{previousComment}</p>
 
           <hr className="comentary__separator" />
         </div>
@@ -40,12 +49,18 @@ const Modal = ({
         <Input
           placeholder="Escreva seu comentário..."
           additionalClass="comentary__entry"
+          value={commentText}
+          manipulationFunction={(e) => {
+            commentText(e.target.value);
+          }}
         />
 
         <Button
           textButton="Comentar"
           additionalClass="comentary__button"
-          manipulationFunction={fnPost}
+          manipulationFunction={(e) => {
+            fnPost(commentText, idEvento);
+          }}
         />
       </article>
     </div>

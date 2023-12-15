@@ -7,7 +7,7 @@ export const UserTokenDecoder = (theToken) => {
     const decoded = jwtDecode(theToken); //aqui vem o payload do jwt
 
     return {
-        role: "Aluno",
+        role: decoded.role,
         nome: decoded.name,
         userId: decoded.jti,
         token: theToken

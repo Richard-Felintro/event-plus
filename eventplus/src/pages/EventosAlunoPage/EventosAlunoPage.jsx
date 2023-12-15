@@ -97,17 +97,23 @@ const EventosAlunoPage = () => {
 
   async function getComment() {
     try {
+      console.log(userData.userId,idEvento);
       const promise = await api.get(
-        `ComentariosEvento/BuscarPorIdUsuario?IdUsuario=${userData.nome}&IdEvento=${idEvento}`
-      );
-      return promise;
+        `/ComentariosEvento/BuscarPorIdUsuarioEEvento?IdUsuario=${userData.userId}&IdEvento=${idEvento}`);
+        console.log(promise.data);
+      return promise.data;
     } catch (error) {
-
     }
   }
 
-  async function postMyComment(idComentary) {
-    return "????";
+  async function postMyComment(desc,eventId) {
+    const promise = await api.post("/ComentariosEvento",{
+      descricao: desc,
+      idUsuario: userData.userId,
+      idEvento: eventId,
+      exibe: true
+    });
+    showHideModal(null)
   }
 
   const showHideModal = async (id) => {
@@ -121,10 +127,10 @@ const EventosAlunoPage = () => {
     alert("Remover o comentário");
   };
 
-  async function handleConnect(idEvent, theFunc, idPresencaEvento = null) {
-    if (theFunc === "connect") {
+  async function handleConnect(idEvent, situacao, idPresencaEvento) {
+    if (situacao === "connect") {
       try {
-        const promise = api.post("/PresencasEvento", {
+        const promise = await api.post("/Presenca/", {
           situacao: true,
           IdUsuario: userData.userId,
           IdEvento: idEvent,
@@ -134,10 +140,14 @@ const EventosAlunoPage = () => {
       } catch (error) {
         console.log(error);
       }
-      return;
     }
-    const promiseDelete = api.delete("/PresencasEvento" + idPresencaEvento);
-    if (promiseDelete.status === 204) {
+    else{
+      try {
+        console.log(idPresencaEvento);
+        await api.delete("/Presenca/" + idPresencaEvento);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
   return (

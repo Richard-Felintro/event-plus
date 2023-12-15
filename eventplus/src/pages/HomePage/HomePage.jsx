@@ -30,26 +30,26 @@ const HomePage = () => {
         <section className="proximos-eventos">
           <Container>
             <div className="events-box">
-              <Swiper
+              {/* <Swiper
                 spaceBetween={50}
                 slidesPerView={4}
                 navigation
                 pagination={{ clickable: true }}
                 scrollbar={{ draggable: true }}
-              >
+              > */}
                 {nextEvents.map((e) => {
                   return (
-                    <SwiperSlide>
+                    // <SwiperSlide>
                       <NextEvent
                         title={e.nomeEvento}
                         description={e.descricao}
                         eventDate={e.dataEvento}
                         idEvento={e.idEvento}
                       />
-                    </SwiperSlide>
+                    // </SwiperSlide>
                   );
                 })}
-              </Swiper>
+              {/* </Swiper> */}
             </div>
           </Container>
         </section>

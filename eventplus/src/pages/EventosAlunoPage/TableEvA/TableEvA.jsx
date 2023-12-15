@@ -38,7 +38,6 @@ const Table = ({ dados, fnConnect = null, fnShowModal = null }) => {
                 {/* {e.dataEvento} */}
                 {dateFormatDbToView(e.dataEvento)}
               </td>
-              <label htmlFor="">{e.idEvento}</label>
 
               <td className="tbal-data__data tbal-data__data--big tbal-data__btn-actions">
                 <img
